@@ -7,157 +7,176 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #0e0f11;
-  --surface: #16181c;
-  --surface2: #1d1f24;
-  --border: #25282f;
-  --border2: #32363f;
-  --text: #e4e6ef;
-  --text2: #8b8fa8;
-  --text3: #52566a;
-  --accent: #6c8fff;
-  --accent-dim: #131b33;
-  --accent-glow: rgba(108,143,255,0.12);
-  --green: #3ecf8e;
-  --green-dim: #0b2318;
-  --red: #f87171;
-  --red-dim: #270d0d;
-  --amber: #fbbf24;
-  --amber-dim: #251900;
-  --purple: #c084fc;
-  --purple-dim: #1a0a30;
-  --teal: #2dd4bf;
-  --teal-dim: #092320;
-  --r: 10px;
-  --rl: 14px;
+  --bg:       #0c0d0f;
+  --s1:       #14161a;
+  --s2:       #1a1d23;
+  --s3:       #20242c;
+  --bd:       #232730;
+  --bd2:      #2e3340;
+  --tx:       #e2e4ef;
+  --tx2:      #8890a8;
+  --tx3:      #4e5468;
+  --ac:       #6c8fff;
+  --ac-d:     #111c38;
+  --ac-g:     rgba(108,143,255,.1);
+  --gr:       #3ecf8e;
+  --gr-d:     #08201a;
+  --rd:       #f87171;
+  --rd-d:     #220d0d;
+  --am:       #fbbf24;
+  --am-d:     #201200;
+  --pu:       #c084fc;
+  --pu-d:     #180930;
+  --te:       #2dd4bf;
+  --te-d:     #072320;
+  --r:        10px;
+  --rl:       14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:0.25;pointer-events:none;z-index:0}
-.wrap{max-width:800px;margin:0 auto;padding:2.5rem 1.25rem 5rem;position:relative;z-index:1}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:15px;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);
+  background-size:48px 48px;opacity:.2;pointer-events:none;z-index:0}
+.wrap{max-width:820px;margin:0 auto;padding:2rem 1.25rem 6rem;position:relative;z-index:1}
 
-/* Header */
-.hdr{text-align:center;margin-bottom:2rem}
-.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:.6rem}
-.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center}
+/* ── Header ── */
+.hdr{text-align:center;margin-bottom:1.75rem}
+.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:.5rem}
+.logo-icon{width:40px;height:40px;background:var(--ac);border-radius:11px;display:flex;align-items:center;justify-content:center}
 .logo-icon svg{width:22px;height:22px}
-.logo-name{font-size:22px;font-weight:600;letter-spacing:-.5px}
-.logo-name span{color:var(--accent)}
-.tagline{font-size:13px;color:var(--text3)}
+.logo-name{font-size:23px;font-weight:600;letter-spacing:-.5px}
+.logo-name em{font-style:normal;color:var(--ac)}
+.tagline{font-size:13px;color:var(--tx3);margin-top:2px}
 
-/* API key section */
-.key-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem}
-.key-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;flex-wrap:wrap;gap:8px}
-.key-title{font-size:12px;font-weight:500;color:var(--text2)}
-.key-badge{font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500}
-.key-badge.free{background:var(--green-dim);color:var(--green);border:1px solid rgba(62,207,142,.25)}
-.key-badge.ai{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(108,143,255,.25)}
-.key-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.key-row input{flex:1;min-width:160px;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .15s}
-.key-row input:focus{border-color:var(--accent)}
-.key-row input::placeholder{color:var(--text3)}
-.key-hint{font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5}
-.key-hint a{color:var(--accent);text-decoration:none}
-.key-hint a:hover{text-decoration:underline}
+/* ── AI status pill ── */
+.ai-status-bar{display:flex;justify-content:center;margin-bottom:1.5rem}
+.ai-pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--bd2);background:var(--s1);color:var(--tx2);font-family:'DM Mono',monospace;transition:all .3s}
+.ai-pill.loading{border-color:rgba(251,191,36,.4);background:var(--am-d);color:var(--am)}
+.ai-pill.ready  {border-color:rgba(62,207,142,.4);background:var(--gr-d);color:var(--gr)}
+.ai-pill.error  {border-color:rgba(248,113,113,.4);background:var(--rd-d);color:var(--rd)}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.ai-dot.pulse{animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* Tabs */
-.tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:4px;margin-bottom:1.25rem}
-.tab{flex:1;padding:9px;font-size:14px;font-weight:400;border:none;background:transparent;cursor:pointer;color:var(--text2);border-radius:9px;transition:all .15s;font-family:'DM Sans',sans-serif}
-.tab.active{background:var(--surface2);color:var(--text);font-weight:500;border:1px solid var(--border2)}
+/* ── Tabs ── */
+.tabs{display:flex;gap:2px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rl);padding:4px;margin-bottom:1.25rem}
+.tab{flex:1;padding:9px;font-size:14px;font-weight:400;border:none;background:transparent;cursor:pointer;color:var(--tx2);border-radius:9px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.tab.active{background:var(--s2);color:var(--tx);font-weight:500;border:1px solid var(--bd2)}
 .panel{display:none}.panel.active{display:block}
 
-/* Input row */
+/* ── Input ── */
 .irow{display:flex;gap:8px;margin-bottom:1rem}
-.irow input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:11px 15px;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:all .15s}
-.irow input::placeholder{color:var(--text3)}
-.irow input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-.btn{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:11px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .15s,transform .1s}
-.btn:hover{opacity:.85}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.irow input{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:11px 15px;font-size:14px;color:var(--tx);font-family:'DM Sans',sans-serif;outline:none;transition:all .15s}
+.irow input::placeholder{color:var(--tx3)}
+.irow input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-g)}
+.btn{background:var(--ac);color:#fff;border:none;border-radius:var(--r);padding:11px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .15s,transform .1s}
+.btn:hover{opacity:.85}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4;cursor:not-allowed}
 
-/* Chips */
+/* ── Chips ── */
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
-.chip{font-size:12px;padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
-.chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-.hint-text{font-size:13px;color:var(--text3);margin-bottom:.75rem}
+.chip{font-size:12px;padding:5px 13px;border-radius:100px;border:1px solid var(--bd);background:var(--s1);color:var(--tx2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.chip:hover{border-color:var(--ac);color:var(--ac);background:var(--ac-d)}
+.hint-txt{font-size:13px;color:var(--tx3);margin-bottom:.75rem}
 
-/* Loading / Error */
-.loading{padding:3rem;text-align:center;color:var(--text3);font-size:14px}
-.spin{width:26px;height:26px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 12px}
+/* ── Loading / Error ── */
+.loading{padding:2.5rem;text-align:center;color:var(--tx3);font-size:13px}
+.spin{width:26px;height:26px;border:2px solid var(--bd2);border-top-color:var(--ac);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.error{background:var(--red-dim);border:1px solid rgba(248,113,113,.4);border-radius:var(--r);padding:14px 18px;color:var(--red);font-size:13px;line-height:1.65}
-.error strong{display:block;margin-bottom:4px}
+.error{background:var(--rd-d);border:1px solid rgba(248,113,113,.35);border-radius:var(--r);padding:14px 18px;color:var(--rd);font-size:13px;line-height:1.65}
+.error strong{display:block;margin-bottom:4px;font-size:14px}
 
-/* Summary card */
-.scard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;animation:fadeUp .3s ease}
+/* ── Summary card ── */
+.scard{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;animation:fadeUp .3s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-.scard-head{padding:1.2rem 1.4rem;border-bottom:1px solid var(--border);background:var(--surface2)}
-.scard-title{font-size:16px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:5px;letter-spacing:-.2px}
-.scard-meta{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.cite-pill{background:var(--surface);border:1px solid var(--border2);border-radius:100px;padding:2px 9px;font-size:11px;color:var(--text2)}
+.scard-head{padding:1.2rem 1.4rem;border-bottom:1px solid var(--bd);background:var(--s2)}
+.scard-title{font-size:16px;font-weight:600;color:var(--tx);line-height:1.4;margin-bottom:5px;letter-spacing:-.2px}
+.scard-meta{font-size:11px;color:var(--tx3);font-family:'DM Mono',monospace;margin-bottom:9px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.cite-pill{background:var(--s3);border:1px solid var(--bd2);border-radius:100px;padding:2px 9px;font-size:11px;color:var(--tx2)}
 .tag-row{display:flex;gap:5px;flex-wrap:wrap}
 .tag{font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500}
-.t-blue{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(108,143,255,.25)}
-.t-purple{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(192,132,252,.25)}
-.t-teal{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(45,212,191,.25)}
-.t-amber{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(251,191,36,.25)}
-.t-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(62,207,142,.25)}
+.t-ac  {background:var(--ac-d);color:var(--ac);border:1px solid rgba(108,143,255,.25)}
+.t-pu  {background:var(--pu-d);color:var(--pu);border:1px solid rgba(192,132,252,.25)}
+.t-te  {background:var(--te-d);color:var(--te);border:1px solid rgba(45,212,191,.25)}
+.t-am  {background:var(--am-d);color:var(--am);border:1px solid rgba(251,191,36,.25)}
+.t-gr  {background:var(--gr-d);color:var(--gr);border:1px solid rgba(62,207,142,.25)}
+.t-rd  {background:var(--rd-d);color:var(--rd);border:1px solid rgba(248,113,113,.25)}
 
-/* Mode badge */
-.mode-strip{padding:6px 1.4rem;border-bottom:1px solid var(--border);font-size:11px;display:flex;align-items:center;gap:6px}
-.mode-strip.free-mode{background:var(--green-dim);color:var(--green)}
-.mode-strip.ai-mode{background:var(--accent-dim);color:var(--accent)}
+/* ── Mode strip ── */
+.mode-strip{padding:7px 1.4rem;font-size:11px;display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;border-bottom:1px solid var(--bd)}
+.mode-strip.tr{background:var(--te-d);color:var(--te)}
+.mode-strip.ai{background:var(--ac-d);color:var(--ac)}
+.mode-strip.analyzing{background:var(--am-d);color:var(--am)}
 .mode-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 
-/* Grid sections */
+/* ── AI upgrade button ── */
+.ai-upgrade-row{padding:.85rem 1.4rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--s2)}
+.ai-upgrade-row span{font-size:13px;color:var(--tx2);flex:1}
+.ai-btn{font-size:13px;padding:7px 16px;border-radius:var(--r);background:var(--ac);color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:opacity .15s;white-space:nowrap}
+.ai-btn:hover{opacity:.85}
+.ai-btn:disabled{opacity:.4;cursor:not-allowed}
+.ai-btn.running{background:var(--am-d);color:var(--am);border:1px solid rgba(251,191,36,.35)}
+
+/* ── Sections grid ── */
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:0}
 @media(max-width:560px){.sgrid{grid-template-columns:1fr}}
-.sec{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.sec{padding:1.05rem 1.4rem;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd)}
 .sec:nth-child(2n){border-right:none}
-.sec:nth-last-child(-n+2){border-bottom:none}
-.sec-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:'DM Mono',monospace}
-.sec-txt{font-size:13px;color:var(--text2);line-height:1.65}
+.sec.full{grid-column:1/-1;border-right:none}
+.sec:last-child,.sec:nth-last-child(2):not(.full){border-bottom:none}
+.sec-lbl{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:'DM Mono',monospace}
+.sec-txt{font-size:13px;color:var(--tx2);line-height:1.65}
 .blist{list-style:none;padding:0}
-.blist li{font-size:13px;color:var(--text2);line-height:1.6;padding-left:14px;position:relative;margin-bottom:3px}
-.blist li::before{content:'›';position:absolute;left:0;color:var(--accent)}
+.blist li{font-size:13px;color:var(--tx2);line-height:1.6;padding-left:14px;position:relative;margin-bottom:3px}
+.blist li::before{content:'›';position:absolute;left:0;color:var(--ac)}
 
-/* Abstract section (free mode) */
-.abstract-sec{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border)}
-.abstract-txt{font-size:13px;color:var(--text2);line-height:1.7;max-height:120px;overflow:hidden;position:relative;transition:max-height .3s}
-.abstract-txt.expanded{max-height:none}
-.read-more{font-size:12px;color:var(--accent);cursor:pointer;margin-top:6px;display:inline-block}
+/* ── AI summary highlight ── */
+.ai-summary-box{background:var(--ac-d);border:1px solid rgba(108,143,255,.2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--tx);line-height:1.7;margin:0}
+.ai-summary-label{font-size:10px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:'DM Mono',monospace}
 
-/* TL;DR */
-.tldr{padding:.95rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;background:var(--accent-dim)}
-.tldr-lbl{font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;padding-top:2px;font-family:'DM Mono',monospace}
-.tldr-txt{font-size:13px;color:var(--text);line-height:1.6}
+/* ── Keywords ── */
+.kw-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.kw{font-size:11px;padding:2px 9px;border-radius:100px;background:var(--s3);color:var(--tx2);border:1px solid var(--bd2)}
 
-/* Verdict */
-.verdict{padding:.85rem 1.4rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface2)}
-.verdict-lbl{font-size:12px;color:var(--text3);flex:1;min-width:100px}
+/* ── TL;DR ── */
+.tldr{padding:.9rem 1.4rem;display:flex;gap:10px;align-items:flex-start;background:var(--ac-d);border-top:1px solid var(--bd)}
+.tldr-lbl{font-size:10px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;padding-top:2px;font-family:'DM Mono',monospace}
+.tldr-txt{font-size:13px;color:var(--tx);line-height:1.65}
+
+/* ── Abstract toggle ── */
+.abs-sec{padding:1.05rem 1.4rem;border-bottom:1px solid var(--bd)}
+.abs-body{font-size:13px;color:var(--tx2);line-height:1.7;max-height:80px;overflow:hidden;transition:max-height .4s ease}
+.abs-body.open{max-height:600px}
+.read-more{font-size:12px;color:var(--ac);cursor:pointer;margin-top:5px;display:inline-block;user-select:none}
+
+/* ── Verdict / links bar ── */
+.verdict{padding:.85rem 1.4rem;border-top:1px solid var(--bd);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--s2)}
+.verdict-links{font-size:12px;display:flex;gap:10px;flex:1}
+.verdict-links a{color:var(--ac);text-decoration:none}
+.verdict-links a:hover{text-decoration:underline}
+.verdict-links span{color:var(--tx3)}
 .vbtns{display:flex;gap:6px}
-.vbtn{font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.vbtn:hover{border-color:var(--text2);color:var(--text)}
-.vbtn.yes{background:var(--green-dim);color:var(--green);border-color:rgba(62,207,142,.5)}
-.vbtn.no{background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,.5)}
+.vbtn{font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--bd2);background:transparent;color:var(--tx2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.vbtn:hover{border-color:var(--tx2);color:var(--tx)}
+.vbtn.yes{background:var(--gr-d);color:var(--gr);border-color:rgba(62,207,142,.5)}
+.vbtn.no{background:var(--rd-d);color:var(--rd);border-color:rgba(248,113,113,.5)}
 
-/* Search results */
-.rcount{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px}
+/* ── Search results ── */
+.rcount{font-size:11px;color:var(--tx3);font-family:'DM Mono',monospace;margin-bottom:10px}
 .results{display:flex;flex-direction:column;gap:8px}
-.pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.2rem;transition:border-color .15s;animation:fadeUp .2s ease}
-.pcard:hover{border-color:var(--border2)}
-.pcard-title{font-size:14px;font-weight:500;color:var(--text);line-height:1.45;margin-bottom:5px}
-.pcard-meta{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.pcard-abs{font-size:12px;color:var(--text3);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+.pcard{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rl);padding:1rem 1.2rem;transition:border-color .15s;animation:fadeUp .2s ease}
+.pcard:hover{border-color:var(--bd2)}
+.pcard-title{font-size:14px;font-weight:500;color:var(--tx);line-height:1.45;margin-bottom:5px}
+.pcard-meta{font-size:11px;color:var(--tx3);font-family:'DM Mono',monospace;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.pcard-abs{font-size:12px;color:var(--tx3);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
 .pcard-acts{display:flex;gap:6px;flex-wrap:wrap}
-.pa{font-size:12px;padding:5px 13px;border-radius:100px;border:1px solid var(--border2);color:var(--text2);background:transparent;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all .15s;display:inline-block}
-.pa:hover{border-color:var(--accent);color:var(--accent)}
-.pa.pri{background:var(--accent-dim);color:var(--accent);border-color:rgba(108,143,255,.35)}
-.pa.pri:hover{background:var(--accent);color:#fff}
-.no-res{padding:3rem;text-align:center;color:var(--text3);font-size:14px}
-
-/* Links */
-a{color:inherit;text-decoration:none}
+.pa{font-size:12px;padding:5px 13px;border-radius:100px;border:1px solid var(--bd2);color:var(--tx2);background:transparent;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all .15s;display:inline-block}
+.pa:hover{border-color:var(--ac);color:var(--ac)}
+.pa.pri{background:var(--ac-d);color:var(--ac);border-color:rgba(108,143,255,.35)}
+.pa.pri:hover{background:var(--ac);color:#fff}
+.no-res{padding:3rem;text-align:center;color:var(--tx3);font-size:14px}
+a{text-decoration:none;color:inherit}
 </style>
 </head>
 <body>
@@ -174,25 +193,16 @@ a{color:inherit;text-decoration:none}
           <path d="M19 19l2 2" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </div>
-      <span class="logo-name">Research<span>Lens</span></span>
+      <span class="logo-name">Research<em>Lens</em></span>
     </div>
-    <div class="tagline">Instantly understand any research paper — free, no key required</div>
+    <div class="tagline">Understand any research paper in seconds · No sign-up needed</div>
   </div>
 
-  <!-- API Key Section -->
-  <div class="key-section">
-    <div class="key-header">
-      <span class="key-title">AI Enhancement (optional)</span>
-      <span class="key-badge free" id="modeBadge">Free mode — works without key</span>
-    </div>
-    <div class="key-row">
-      <input type="password" id="apiKeyInput" placeholder="Anthropic API key — sk-ant-api03-… (optional)" oninput="onKeyInput()"/>
-      <button class="btn" style="padding:8px 16px;font-size:13px" onclick="saveKey()">Save</button>
-    </div>
-    <div class="key-hint">
-      Without a key: summaries use <strong>arXiv + Semantic Scholar</strong> metadata — fast & completely free.<br>
-      With a key: uses <strong>Claude Haiku</strong> (cheapest model, ~$0.001 per summary) for deeper analysis.
-      Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+  <!-- AI Model Status -->
+  <div class="ai-status-bar">
+    <div class="ai-pill loading" id="aiPill">
+      <div class="ai-dot pulse"></div>
+      <span id="aiPillText">Preparing analysis engine…</span>
     </div>
   </div>
 
@@ -205,28 +215,32 @@ a{color:inherit;text-decoration:none}
   <!-- Summarize Panel -->
   <div id="summarize" class="panel active">
     <div class="irow">
-      <input id="paperUrl" type="text" placeholder="Paste arXiv URL — e.g. https://arxiv.org/abs/2408.11001" onkeydown="if(event.key==='Enter')summarize()"/>
-      <button class="btn" id="sumBtn" onclick="summarize()">Summarize</button>
+      <input id="paperUrl" type="text"
+        placeholder="Paste arXiv URL — e.g. https://arxiv.org/abs/2408.11001"
+        onkeydown="if(event.key==='Enter')doSummarize()"/>
+      <button class="btn" id="sumBtn" onclick="doSummarize()">Summarize</button>
     </div>
     <div id="sumOut"></div>
   </div>
 
   <!-- Search Panel -->
   <div id="search" class="panel">
-    <div class="hint-text">Search by topic, technique, or concept</div>
+    <div class="hint-txt">Search by topic, concept, technique, or keyword</div>
     <div class="chips">
       <span class="chip" onclick="qs('HDR imaging exposure fusion deep learning')">HDR imaging</span>
       <span class="chip" onclick="qs('image segmentation semantic deep learning')">Segmentation</span>
       <span class="chip" onclick="qs('GAN image synthesis generative adversarial')">GANs</span>
-      <span class="chip" onclick="qs('diffusion models image generation')">Diffusion models</span>
-      <span class="chip" onclick="qs('transformer vision self-attention')">Vision Transformers</span>
-      <span class="chip" onclick="qs('neural radiance field 3D reconstruction')">NeRF</span>
-      <span class="chip" onclick="qs('large language model instruction tuning')">LLMs</span>
-      <span class="chip" onclick="qs('image inpainting deep learning')">Inpainting</span>
-      <span class="chip" onclick="qs('low light image enhancement')">Low-light</span>
+      <span class="chip" onclick="qs('diffusion models image generation stable')">Diffusion</span>
+      <span class="chip" onclick="qs('transformer vision self-attention ViT')">Vision Transformers</span>
+      <span class="chip" onclick="qs('neural radiance field NeRF 3D scene')">NeRF</span>
+      <span class="chip" onclick="qs('image inpainting deep learning completion')">Inpainting</span>
+      <span class="chip" onclick="qs('low light image enhancement denoising')">Low-light</span>
+      <span class="chip" onclick="qs('3D LUT color grading image enhancement')">3D LUT</span>
     </div>
     <div class="irow">
-      <input id="searchQ" type="text" placeholder="e.g. bracket HDR fusion, window inpainting, SAM segmentation…" onkeydown="if(event.key==='Enter')doSearch()"/>
+      <input id="searchQ" type="text"
+        placeholder="e.g. bracket HDR fusion, window inpainting, SAM segmentation…"
+        onkeydown="if(event.key==='Enter')doSearch()"/>
       <button class="btn" onclick="doSearch()">Search</button>
     </div>
     <div id="searchOut"></div>
@@ -235,29 +249,54 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <script>
-let apiKey = '';
+// ── State ────────────────────────────────────────────────────────────────────
+let currentPaper = null;
+let aiModelReady = false;
 
-function onKeyInput() {
-  const v = document.getElementById('apiKeyInput').value.trim();
-  updateBadge(v ? 'ai' : 'free');
+// ── Poll AI status ────────────────────────────────────────────────────────────
+function setAIReady() {
+  aiModelReady = true;
+  const pill = document.getElementById('aiPill');
+  const txt  = document.getElementById('aiPillText');
+  pill.className = 'ai-pill ready';
+  txt.textContent = 'AI ready — Deep analysis available';
+  const dot = pill.querySelector('.ai-dot');
+  if (dot) dot.classList.remove('pulse');
+  // Enable upgrade button if visible
+  const upgradeBtn = document.getElementById('upgradeBtn');
+  if (upgradeBtn) { upgradeBtn.disabled = false; upgradeBtn.textContent = 'Deep AI analysis ↑'; }
 }
 
-function saveKey() {
-  apiKey = document.getElementById('apiKeyInput').value.trim();
-  updateBadge(apiKey ? 'ai' : 'free');
+async function pollStatus() {
+  try {
+    const r = await fetch('/api/status');
+    if (!r.ok) throw new Error('status error');
+    const s = await r.json();
+    const pill = document.getElementById('aiPill');
+    const txt  = document.getElementById('aiPillText');
+
+    if (s.aiReady) {
+      setAIReady();
+      return; // stop polling
+    } else if (s.aiError) {
+      pill.className = 'ai-pill error';
+      txt.textContent = 'Quick analysis mode — AI engine unavailable';
+      const dot = pill.querySelector('.ai-dot');
+      if (dot) dot.classList.remove('pulse');
+      return; // stop polling
+    } else {
+      pill.className = 'ai-pill loading';
+      txt.textContent = s.aiLoading
+        ? 'Setting up AI engine (one-time download)…'
+        : 'AI engine warming up…';
+    }
+  } catch (_) { /* server not ready yet, keep polling */ }
+  setTimeout(pollStatus, 2000); // poll every 2s (faster catch)
 }
 
-function updateBadge(mode) {
-  const b = document.getElementById('modeBadge');
-  if (mode === 'ai') {
-    b.className = 'key-badge ai';
-    b.textContent = 'AI mode — Claude Haiku enabled';
-  } else {
-    b.className = 'key-badge free';
-    b.textContent = 'Free mode — works without key';
-  }
-}
+pollStatus();
 
+// ── Tab switch ────────────────────────────────────────────────────────────────
 function switchTab(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -271,87 +310,109 @@ function qs(q) {
   doSearch();
 }
 
-// ── Summarize ────────────────────────────────────────────────────────────────
-async function summarize() {
+// ── Summarize ─────────────────────────────────────────────────────────────────
+async function doSummarize() {
   const url = document.getElementById('paperUrl').value.trim();
   if (!url) return;
   const out = document.getElementById('sumOut');
   const btn = document.getElementById('sumBtn');
   btn.disabled = true;
-  out.innerHTML = `<div class="loading"><div class="spin"></div>Fetching paper from arXiv…</div>`;
+  currentPaper = null;
+  out.innerHTML = `<div class="loading"><div class="spin"></div>Fetching from arXiv…</div>`;
 
   try {
-    // Step 1: Fetch arXiv metadata
     const r = await fetch(`/api/arxiv?url=${encodeURIComponent(url)}`);
-    const paper = await r.json();
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({ error: `Server returned ${r.status}` }));
+      throw new Error(err.error || `HTTP ${r.status}`);
+    }
+    const data = await r.json();
 
-    if (paper.error) {
-      out.innerHTML = `<div class="error"><strong>Could not fetch paper</strong>${paper.error}<br><br>Make sure you're using an arXiv abstract URL like:<br><code>https://arxiv.org/abs/2408.11001</code></div>`;
+    if (data.error) {
+      out.innerHTML = `<div class="error">
+        <strong>Could not fetch paper</strong><br>
+        ${data.error}<br><br>
+        Try an arXiv abstract URL like: <code style="color:var(--ac)">https://arxiv.org/abs/1706.05587</code>
+      </div>`;
       return;
     }
 
-    if (apiKey) {
-      // Step 2a: AI mode — send to Claude Haiku via proxy
-      out.innerHTML = `<div class="loading"><div class="spin"></div>Analyzing with Claude Haiku…</div>`;
-      const ar = await fetch('/api/summarize-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apiKey, paperData: paper })
-      });
-      const ai = await ar.json();
-      if (ai.error) {
-        out.innerHTML = `<div class="error"><strong>AI Error:</strong> ${ai.error}<br>Falling back to free mode…</div>`;
-        setTimeout(() => renderFree(paper, out), 1200);
-      } else {
-        renderAI(paper, ai, out);
-      }
-    } else {
-      // Step 2b: Free mode — structured extraction from abstract
-      renderFree(paper, out);
+    // Defensive — ensure paper and textrank exist before rendering
+    if (!data.paper || !data.paper.title) {
+      out.innerHTML = `<div class="error"><strong>Unexpected response from server.</strong><br>Please try again.</div>`;
+      return;
     }
+
+    currentPaper = data.paper;
+    const tr = data.textrank || { keywords: [], sections: {}, domain: 'Research', tldr: '' };
+    renderTextRank(data.paper, tr, out);
+
   } catch (e) {
-    out.innerHTML = `<div class="error"><strong>Error:</strong> ${e.message}</div>`;
+    out.innerHTML = `<div class="error"><strong>Error:</strong> ${e.message}<br>Make sure the server is running with <code>node server.js</code></div>`;
   } finally {
     btn.disabled = false;
   }
 }
 
-function renderFree(p, out) {
-  const authors = fmtAuthors(p.authors);
-  const tags = (p.categories || []).slice(0, 4).map(c =>
-    `<span class="tag t-purple">${c}</span>`
-  ).join('');
-  const fieldTags = (p.fieldsOfStudy || []).slice(0, 2).map(f =>
-    `<span class="tag t-blue">${f}</span>`
-  ).join('');
-  const citeStr = p.citationCount != null
-    ? `<span class="cite-pill">${p.citationCount.toLocaleString()} citations</span>` : '';
+// ── Render TextRank result ────────────────────────────────────────────────────
+function renderTextRank(paper, tr, out) {
+  const authors   = fmtAuthors(paper.authors);
+  const citeStr   = paper.citationCount != null
+    ? `<span class="cite-pill">${paper.citationCount.toLocaleString()} citations</span>` : '';
+  const fieldTags = (paper.fieldsOfStudy || []).slice(0, 2)
+    .map(f => `<span class="tag t-te">${f}</span>`).join('');
+  const catTags   = (paper.categories || []).slice(0, 3)
+    .map(c => `<span class="tag t-pu">${c}</span>`).join('');
+  const kwHtml    = (tr.keywords || [])
+    .map(k => `<span class="kw">${k}</span>`).join('');
 
-  // Smart abstract extraction
-  const abs = p.abstract || '';
-  const tldr = p.s2tldr || extractTldr(abs);
+  const sec = tr.sections || {};
+
+  // Build section rows — show whichever buckets have content
+  const sectionRows = buildSectionRows(sec, paper.abstract);
+
+  const tldr = paper.s2tldr || tr.tldr || paper.abstract?.split('.')[0];
 
   out.innerHTML = `
-  <div class="scard">
+  <div class="scard" id="mainCard">
+
     <div class="scard-head">
-      <div class="scard-title">${p.title}</div>
+      <div class="scard-title">${paper.title}</div>
       <div class="scard-meta">
         <span>${authors}</span>
-        <span>· ${p.year}</span>
-        <span>· ${p.venue}</span>
+        <span>· ${paper.year}</span>
+        <span>· ${paper.venue}</span>
         ${citeStr}
       </div>
-      <div class="tag-row">${fieldTags}${tags}</div>
+      <div class="tag-row">
+        <span class="tag t-ac">${tr.domain}</span>
+        ${fieldTags}${catTags}
+      </div>
     </div>
 
-    <div class="mode-strip free-mode">
+    <div class="mode-strip tr" id="modeStrip">
       <div class="mode-dot"></div>
-      Free mode — metadata from arXiv + Semantic Scholar · Add API key above for deeper AI analysis
+      Quick analysis complete · Keyword extraction enabled
     </div>
 
-    <div class="abstract-sec">
-      <div class="sec-lbl">Abstract</div>
-      <div class="abstract-txt" id="absText">${abs}</div>
+    <div class="ai-upgrade-row" id="upgradeRow">
+      <span>Run <strong>Deep AI analysis</strong> for a more detailed summary</span>
+      <button class="ai-btn" id="upgradeBtn"
+        onclick="runAISummarize()"
+        ${aiModelReady ? '' : 'disabled'}>
+        ${aiModelReady ? 'Deep AI analysis ↑' : 'AI model loading…'}
+      </button>
+    </div>
+
+    <div id="aiSummarySlot"></div>
+
+    <div class="sgrid" id="sectionsGrid">
+      ${sectionRows}
+    </div>
+
+    <div class="abs-sec">
+      <div class="sec-lbl">Full abstract</div>
+      <div class="abs-body" id="absBody">${paper.abstract}</div>
       <span class="read-more" onclick="toggleAbs()">Read more ↓</span>
     </div>
 
@@ -361,124 +422,137 @@ function renderFree(p, out) {
     </div>
 
     <div class="verdict">
-      <span class="verdict-lbl">
-        <a href="${p.absUrl}" target="_blank" style="color:var(--accent)">Open on arXiv ↗</a>
-        &nbsp;·&nbsp;
-        <a href="${p.pdfUrl}" target="_blank" style="color:var(--text2)">PDF ↗</a>
-      </span>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:12px;color:var(--text3)">Useful?</span>
+      <div class="verdict-links">
+        <a href="${paper.absUrl}" target="_blank" rel="noopener">arXiv ↗</a>
+        <span>·</span>
+        <a href="${paper.pdfUrl}" target="_blank" rel="noopener" style="color:var(--tx2)">PDF ↗</a>
+        ${kwHtml ? `<span>·</span><div class="kw-row">${kwHtml}</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span style="font-size:12px;color:var(--tx3)">Useful?</span>
         <div class="vbtns">
           <button class="vbtn" id="v-yes" onclick="verd('yes')">Yes</button>
-          <button class="vbtn" id="v-no" onclick="verd('no')">No</button>
+          <button class="vbtn" id="v-no" onclick="verd('no')">Not really</button>
         </div>
       </div>
     </div>
   </div>`;
 }
 
-function renderAI(p, ai, out) {
-  const authors = fmtAuthors(p.authors);
-  const tags = (ai.tags || []).map(t => `<span class="tag t-purple">${t}</span>`).join('');
-  const citeStr = p.citationCount != null
-    ? `<span class="cite-pill">${p.citationCount.toLocaleString()} citations</span>` : '';
-  const bullets = arr => (arr || []).map(i => `<li>${i}</li>`).join('');
+function buildSectionRows(sec, abstract) {
+  const rows = [];
 
-  out.innerHTML = `
-  <div class="scard">
-    <div class="scard-head">
-      <div class="scard-title">${p.title}</div>
-      <div class="scard-meta">
-        <span>${authors}</span>
-        <span>· ${p.year}</span>
-        <span>· ${p.venue}</span>
-        ${citeStr}
-      </div>
-      <div class="tag-row">
-        <span class="tag t-blue">${ai.relevantFor ? 'AI analyzed' : 'AI summary'}</span>
-        ${tags}
-      </div>
-    </div>
+  const addSec = (label, items, cls) => {
+    if (!items || !items.length) return;
+    const content = items.map(s => `<li>${s}</li>`).join('');
+    rows.push(`<div class="sec">
+      <div class="sec-lbl">${label}</div>
+      <ul class="blist">${content}</ul>
+    </div>`);
+  };
 
-    <div class="mode-strip ai-mode">
-      <div class="mode-dot"></div>
-      AI mode — analyzed by Claude Haiku · Deep extraction from abstract
-    </div>
+  addSec('Problem / Gap', sec.problem, '');
+  addSec('Methodology', sec.methodology, '');
+  addSec('Key findings', sec.findings, '');
+  addSec('Contributions', sec.contributions, '');
+  addSec('Limitations', sec.limitations, '');
+  if (sec.general) addSec('Other highlights', sec.general, '');
 
-    <div class="sgrid">
-      <div class="sec">
-        <div class="sec-lbl">Problem solved</div>
-        <div class="sec-txt">${ai.problem}</div>
-      </div>
-      <div class="sec">
-        <div class="sec-lbl">Methodology</div>
-        <ul class="blist">${bullets(ai.methodology)}</ul>
-      </div>
-      <div class="sec">
-        <div class="sec-lbl">Key findings</div>
-        <ul class="blist">${bullets(ai.keyFindings)}</ul>
-      </div>
-      <div class="sec">
-        <div class="sec-lbl">Contributions</div>
-        <ul class="blist">${bullets(ai.contributions)}</ul>
-        <div style="margin-top:12px">
-          <div class="sec-lbl">Limitations</div>
-          <div class="sec-txt" style="margin-top:4px">${ai.limitations}</div>
-        </div>
-      </div>
-    </div>
+  // Pad to even number for grid
+  if (rows.length % 2 !== 0) rows.push(`<div class="sec"><div class="sec-lbl">Note</div><div class="sec-txt" style="color:var(--tx3);font-size:12px">Run AI analysis above for deeper extraction including problem decomposition, methodology details, and contribution classification.</div></div>`);
 
-    <div class="tldr">
-      <span class="tldr-lbl">TL;DR</span>
-      <span class="tldr-txt">${ai.tldr}</span>
-    </div>
+  return rows.join('');
+}
 
-    <div class="verdict">
-      <span class="verdict-lbl">
-        Best for: ${ai.relevantFor} &nbsp;·&nbsp;
-        <a href="${p.absUrl}" target="_blank" style="color:var(--accent)">arXiv ↗</a>
-      </span>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:12px;color:var(--text3)">Useful?</span>
-        <div class="vbtns">
-          <button class="vbtn" id="v-yes" onclick="verd('yes')">Yes</button>
-          <button class="vbtn" id="v-no" onclick="verd('no')">No</button>
-        </div>
-      </div>
-    </div>
+// ── Run deep AI summarize ───────────────────────────────────────────────────────
+async function runAISummarize() {
+  if (!currentPaper) return;
+  const btn  = document.getElementById('upgradeBtn');
+  const slot = document.getElementById('aiSummarySlot');
+  const strip = document.getElementById('modeStrip');
+  btn.disabled = true;
+  btn.className = 'ai-btn running';
+  btn.textContent = 'Running inference…';
+  strip.className = 'mode-strip analyzing';
+  strip.innerHTML = `<div class="mode-dot pulse"></div> Running deep analysis…`;
+
+  slot.innerHTML = `<div style="padding:.75rem 1.4rem;background:var(--am-d);border-bottom:1px solid var(--bd)">
+    <div style="font-size:12px;color:var(--am);font-family:'DM Mono',monospace;margin-bottom:4px">AI INFERENCE RUNNING</div>
+    <div style="font-size:12px;color:var(--tx2)">Generating a deeper summary. This may take 10–60 seconds…</div>
   </div>`;
+
+  try {
+    const r = await fetch('/api/ai-summarize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        abstract: currentPaper.abstract,
+        title: currentPaper.title
+      })
+    });
+    const result = await r.json();
+
+    if (result.error) {
+      slot.innerHTML = `<div style="padding:.75rem 1.4rem;background:var(--rd-d);border-bottom:1px solid var(--bd)">
+        <div style="font-size:12px;color:var(--rd)">AI Error: ${result.error}</div>
+      </div>`;
+      btn.textContent = 'AI error — retry';
+      btn.className = 'ai-btn';
+      btn.disabled = false;
+      return;
+    }
+
+    // Show AI output
+    slot.innerHTML = `<div style="padding:1rem 1.4rem;border-bottom:1px solid var(--bd)">
+      <div class="ai-summary-label">AI Summary <span style="opacity:.5;font-weight:400">(${result.elapsed}s)</span></div>
+      <div class="ai-summary-box">${result.aiSummary}</div>
+    </div>`;
+
+    strip.className = 'mode-strip ai';
+    strip.innerHTML = `<div class="mode-dot"></div> Deep AI analysis complete · ${result.elapsed}s`;
+
+    // Update sections grid if we got enriched sections
+    if (result.sections) {
+      const grid = document.getElementById('sectionsGrid');
+      if (grid) grid.innerHTML = buildSectionRows(result.sections, currentPaper.abstract);
+    }
+
+    document.getElementById('upgradeRow').style.display = 'none';
+
+  } catch (e) {
+    slot.innerHTML = `<div style="padding:.75rem 1.4rem;background:var(--rd-d);border-bottom:1px solid var(--bd)">
+      <div style="font-size:12px;color:var(--rd)">Error: ${e.message}</div>
+    </div>`;
+    btn.textContent = 'Retry';
+    btn.className = 'ai-btn';
+    btn.disabled = false;
+  }
 }
 
-function extractTldr(abstract) {
-  if (!abstract) return 'No abstract available.';
-  const sentences = abstract.match(/[^.!?]+[.!?]+/g) || [];
-  if (sentences.length <= 2) return abstract;
-  return (sentences[0] + ' ' + sentences[sentences.length - 1]).trim();
-}
-
-function fmtAuthors(arr) {
-  if (!arr || !arr.length) return 'Unknown authors';
-  const shown = arr.slice(0, 3).join(', ');
-  return arr.length > 3 ? shown + ' et al.' : shown;
-}
-
+// ── Abstract toggle ───────────────────────────────────────────────────────────
 function toggleAbs() {
-  const el = document.getElementById('absText');
-  const expanded = el.classList.toggle('expanded');
-  el.nextElementSibling.textContent = expanded ? 'Show less ↑' : 'Read more ↓';
+  const el = document.getElementById('absBody');
+  const open = el.classList.toggle('open');
+  el.nextElementSibling.textContent = open ? 'Show less ↑' : 'Read more ↓';
 }
 
 function verd(v) {
   document.getElementById('v-yes').className = 'vbtn' + (v === 'yes' ? ' yes' : '');
-  document.getElementById('v-no').className = 'vbtn' + (v === 'no' ? ' no' : '');
+  document.getElementById('v-no').className  = 'vbtn' + (v === 'no'  ? ' no'  : '');
 }
 
-// ── Search ───────────────────────────────────────────────────────────────────
+function fmtAuthors(arr) {
+  if (!arr || !arr.length) return 'Unknown authors';
+  const s = arr.slice(0, 3).join(', ');
+  return arr.length > 3 ? s + ' et al.' : s;
+}
+
+// ── Search ────────────────────────────────────────────────────────────────────
 async function doSearch() {
   const q = document.getElementById('searchQ').value.trim();
   if (!q) return;
   const out = document.getElementById('searchOut');
-  out.innerHTML = `<div class="loading"><div class="spin"></div>Searching Semantic Scholar…</div>`;
+  out.innerHTML = `<div class="loading"><div class="spin"></div>Searching papers…</div>`;
 
   try {
     const r = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=10`);
@@ -493,7 +567,7 @@ async function doSearch() {
     }
 
     out.innerHTML = `
-      <div class="rcount">${papers.length} results for "${q}"</div>
+      <div class="rcount">${papers.length} results for "${q}" <span style="opacity:.6">via ${data.source === 'arxiv' ? 'arXiv' : 'Semantic Scholar'}</span></div>
       <div class="results">${papers.map(paperCard).join('')}</div>`;
   } catch (e) {
     out.innerHTML = `<div class="error"><strong>Search failed:</strong> ${e.message}</div>`;
@@ -502,16 +576,13 @@ async function doSearch() {
 
 function paperCard(p) {
   const authors = (p.authors || []).slice(0, 2).map(a => a.name).join(', ')
-    + ((p.authors || []).length > 2 ? ' et al.' : '');
+    + ((p.authors||[]).length > 2 ? ' et al.' : '');
   const arxivId = p.externalIds?.ArXiv;
-  const pdfUrl = p.openAccessPdf?.url || '';
+  const pdfUrl  = p.openAccessPdf?.url || '';
   const arxivUrl = arxivId ? `https://arxiv.org/abs/${arxivId}` : '';
-  const doiUrl = p.externalIds?.DOI ? `https://doi.org/${p.externalIds.DOI}` : '';
+  const doiUrl  = p.externalIds?.DOI ? `https://doi.org/${p.externalIds.DOI}` : '';
   const openUrl = arxivUrl || pdfUrl || doiUrl;
-  const sumUrl = arxivUrl;
-
-  const openBtn = openUrl ? `<a class="pa" href="${openUrl}" target="_blank" rel="noopener">Open ↗</a>` : '';
-  const sumBtn = sumUrl ? `<button class="pa pri" onclick="loadSum('${sumUrl}')">Summarize →</button>` : '';
+  const sumUrl  = arxivUrl;
 
   return `<div class="pcard">
     <div class="pcard-title">${p.title}</div>
@@ -522,14 +593,17 @@ function paperCard(p) {
       ${p.citationCount != null ? `<span>· ${p.citationCount.toLocaleString()} citations</span>` : ''}
     </div>
     ${p.abstract ? `<div class="pcard-abs">${p.abstract}</div>` : ''}
-    <div class="pcard-acts">${openBtn}${sumBtn}</div>
+    <div class="pcard-acts">
+      ${openUrl ? `<a class="pa" href="${openUrl}" target="_blank" rel="noopener">Open ↗</a>` : ''}
+      ${sumUrl  ? `<button class="pa pri" onclick="loadSum('${sumUrl}')">Summarize →</button>` : ''}
+    </div>
   </div>`;
 }
 
 function loadSum(url) {
   document.getElementById('paperUrl').value = url;
   switchTab('summarize', document.querySelectorAll('.tab')[0]);
-  summarize();
+  doSummarize();
 }
 </script>
 </body>
