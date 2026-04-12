@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ResearchLens — AI Paper Summarizer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0e0f11;
+  --surface: #16181c;
+  --surface2: #1d1f24;
+  --border: #25282f;
+  --border2: #32363f;
+  --text: #e4e6ef;
+  --text2: #8b8fa8;
+  --text3: #52566a;
+  --accent: #6c8fff;
+  --accent-dim: #131b33;
+  --accent-glow: rgba(108,143,255,0.12);
+  --green: #3ecf8e;
+  --green-dim: #0b2318;
+  --red: #f87171;
+  --red-dim: #270d0d;
+  --amber: #fbbf24;
+  --amber-dim: #251900;
+  --purple: #c084fc;
+  --purple-dim: #1a0a30;
+  --teal: #2dd4bf;
+  --teal-dim: #092320;
+  --r: 10px;
+  --rl: 14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:0.25;pointer-events:none;z-index:0}
+.wrap{max-width:800px;margin:0 auto;padding:2.5rem 1.25rem 5rem;position:relative;z-index:1}
+
+/* Header */
+.hdr{text-align:center;margin-bottom:2rem}
+.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:.6rem}
+.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:22px;height:22px}
+.logo-name{font-size:22px;font-weight:600;letter-spacing:-.5px}
+.logo-name span{color:var(--accent)}
+.tagline{font-size:13px;color:var(--text3)}
+
+/* API key section */
+.key-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem}
+.key-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;flex-wrap:wrap;gap:8px}
+.key-title{font-size:12px;font-weight:500;color:var(--text2)}
+.key-badge{font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500}
+.key-badge.free{background:var(--green-dim);color:var(--green);border:1px solid rgba(62,207,142,.25)}
+.key-badge.ai{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(108,143,255,.25)}
+.key-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.key-row input{flex:1;min-width:160px;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .15s}
+.key-row input:focus{border-color:var(--accent)}
+.key-row input::placeholder{color:var(--text3)}
+.key-hint{font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5}
+.key-hint a{color:var(--accent);text-decoration:none}
+.key-hint a:hover{text-decoration:underline}
+
+/* Tabs */
+.tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:4px;margin-bottom:1.25rem}
+.tab{flex:1;padding:9px;font-size:14px;font-weight:400;border:none;background:transparent;cursor:pointer;color:var(--text2);border-radius:9px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.tab.active{background:var(--surface2);color:var(--text);font-weight:500;border:1px solid var(--border2)}
+.panel{display:none}.panel.active{display:block}
+
+/* Input row */
+.irow{display:flex;gap:8px;margin-bottom:1rem}
+.irow input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:11px 15px;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:all .15s}
+.irow input::placeholder{color:var(--text3)}
+.irow input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:var(--r);padding:11px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .15s,transform .1s}
+.btn:hover{opacity:.85}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* Chips */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+.chip{font-size:12px;padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.hint-text{font-size:13px;color:var(--text3);margin-bottom:.75rem}
+
+/* Loading / Error */
+.loading{padding:3rem;text-align:center;color:var(--text3);font-size:14px}
+.spin{width:26px;height:26px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error{background:var(--red-dim);border:1px solid rgba(248,113,113,.4);border-radius:var(--r);padding:14px 18px;color:var(--red);font-size:13px;line-height:1.65}
+.error strong{display:block;margin-bottom:4px}
+
+/* Summary card */
+.scard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.scard-head{padding:1.2rem 1.4rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+.scard-title{font-size:16px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:5px;letter-spacing:-.2px}
+.scard-meta{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.cite-pill{background:var(--surface);border:1px solid var(--border2);border-radius:100px;padding:2px 9px;font-size:11px;color:var(--text2)}
+.tag-row{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500}
+.t-blue{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(108,143,255,.25)}
+.t-purple{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(192,132,252,.25)}
+.t-teal{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(45,212,191,.25)}
+.t-amber{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(251,191,36,.25)}
+.t-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(62,207,142,.25)}
+
+/* Mode badge */
+.mode-strip{padding:6px 1.4rem;border-bottom:1px solid var(--border);font-size:11px;display:flex;align-items:center;gap:6px}
+.mode-strip.free-mode{background:var(--green-dim);color:var(--green)}
+.mode-strip.ai-mode{background:var(--accent-dim);color:var(--accent)}
+.mode-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* Grid sections */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:560px){.sgrid{grid-template-columns:1fr}}
+.sec{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.sec:nth-child(2n){border-right:none}
+.sec:nth-last-child(-n+2){border-bottom:none}
+.sec-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:'DM Mono',monospace}
+.sec-txt{font-size:13px;color:var(--text2);line-height:1.65}
+.blist{list-style:none;padding:0}
+.blist li{font-size:13px;color:var(--text2);line-height:1.6;padding-left:14px;position:relative;margin-bottom:3px}
+.blist li::before{content:'›';position:absolute;left:0;color:var(--accent)}
+
+/* Abstract section (free mode) */
+.abstract-sec{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border)}
+.abstract-txt{font-size:13px;color:var(--text2);line-height:1.7;max-height:120px;overflow:hidden;position:relative;transition:max-height .3s}
+.abstract-txt.expanded{max-height:none}
+.read-more{font-size:12px;color:var(--accent);cursor:pointer;margin-top:6px;display:inline-block}
+
+/* TL;DR */
+.tldr{padding:.95rem 1.4rem;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;background:var(--accent-dim)}
+.tldr-lbl{font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;padding-top:2px;font-family:'DM Mono',monospace}
+.tldr-txt{font-size:13px;color:var(--text);line-height:1.6}
+
+/* Verdict */
+.verdict{padding:.85rem 1.4rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface2)}
+.verdict-lbl{font-size:12px;color:var(--text3);flex:1;min-width:100px}
+.vbtns{display:flex;gap:6px}
+.vbtn{font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.vbtn:hover{border-color:var(--text2);color:var(--text)}
+.vbtn.yes{background:var(--green-dim);color:var(--green);border-color:rgba(62,207,142,.5)}
+.vbtn.no{background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,.5)}
+
+/* Search results */
+.rcount{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px}
+.results{display:flex;flex-direction:column;gap:8px}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.2rem;transition:border-color .15s;animation:fadeUp .2s ease}
+.pcard:hover{border-color:var(--border2)}
+.pcard-title{font-size:14px;font-weight:500;color:var(--text);line-height:1.45;margin-bottom:5px}
+.pcard-meta{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.pcard-abs{font-size:12px;color:var(--text3);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+.pcard-acts{display:flex;gap:6px;flex-wrap:wrap}
+.pa{font-size:12px;padding:5px 13px;border-radius:100px;border:1px solid var(--border2);color:var(--text2);background:transparent;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all .15s;display:inline-block}
+.pa:hover{border-color:var(--accent);color:var(--accent)}
+.pa.pri{background:var(--accent-dim);color:var(--accent);border-color:rgba(108,143,255,.35)}
+.pa.pri:hover{background:var(--accent);color:#fff}
+.no-res{padding:3rem;text-align:center;color:var(--text3);font-size:14px}
+
+/* Links */
+a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="1.5" width="11" height="14" rx="2" stroke="white" stroke-width="1.6"/>
+          <path d="M6 6h5M6 9h5M6 12h3" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="16" cy="16" r="4" stroke="white" stroke-width="1.6"/>
+          <path d="M19 19l2 2" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="logo-name">Research<span>Lens</span></span>
+    </div>
+    <div class="tagline">Instantly understand any research paper — free, no key required</div>
+  </div>
+
+  <!-- API Key Section -->
+  <div class="key-section">
+    <div class="key-header">
+      <span class="key-title">AI Enhancement (optional)</span>
+      <span class="key-badge free" id="modeBadge">Free mode — works without key</span>
+    </div>
+    <div class="key-row">
+      <input type="password" id="apiKeyInput" placeholder="Anthropic API key — sk-ant-api03-… (optional)" oninput="onKeyInput()"/>
+      <button class="btn" style="padding:8px 16px;font-size:13px" onclick="saveKey()">Save</button>
+    </div>
+    <div class="key-hint">
+      Without a key: summaries use <strong>arXiv + Semantic Scholar</strong> metadata — fast & completely free.<br>
+      With a key: uses <strong>Claude Haiku</strong> (cheapest model, ~$0.001 per summary) for deeper analysis.
+      Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('summarize',this)">Summarize a paper</button>
+    <button class="tab" onclick="switchTab('search',this)">Search papers</button>
+  </div>
+
+  <!-- Summarize Panel -->
+  <div id="summarize" class="panel active">
+    <div class="irow">
+      <input id="paperUrl" type="text" placeholder="Paste arXiv URL — e.g. https://arxiv.org/abs/2408.11001" onkeydown="if(event.key==='Enter')summarize()"/>
+      <button class="btn" id="sumBtn" onclick="summarize()">Summarize</button>
+    </div>
+    <div id="sumOut"></div>
+  </div>
+
+  <!-- Search Panel -->
+  <div id="search" class="panel">
+    <div class="hint-text">Search by topic, technique, or concept</div>
+    <div class="chips">
+      <span class="chip" onclick="qs('HDR imaging exposure fusion deep learning')">HDR imaging</span>
+      <span class="chip" onclick="qs('image segmentation semantic deep learning')">Segmentation</span>
+      <span class="chip" onclick="qs('GAN image synthesis generative adversarial')">GANs</span>
+      <span class="chip" onclick="qs('diffusion models image generation')">Diffusion models</span>
+      <span class="chip" onclick="qs('transformer vision self-attention')">Vision Transformers</span>
+      <span class="chip" onclick="qs('neural radiance field 3D reconstruction')">NeRF</span>
+      <span class="chip" onclick="qs('large language model instruction tuning')">LLMs</span>
+      <span class="chip" onclick="qs('image inpainting deep learning')">Inpainting</span>
+      <span class="chip" onclick="qs('low light image enhancement')">Low-light</span>
+    </div>
+    <div class="irow">
+      <input id="searchQ" type="text" placeholder="e.g. bracket HDR fusion, window inpainting, SAM segmentation…" onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button class="btn" onclick="doSearch()">Search</button>
+    </div>
+    <div id="searchOut"></div>
+  </div>
+
+</div>
+
+<script>
+let apiKey = '';
+
+function onKeyInput() {
+  const v = document.getElementById('apiKeyInput').value.trim();
+  updateBadge(v ? 'ai' : 'free');
+}
+
+function saveKey() {
+  apiKey = document.getElementById('apiKeyInput').value.trim();
+  updateBadge(apiKey ? 'ai' : 'free');
+}
+
+function updateBadge(mode) {
+  const b = document.getElementById('modeBadge');
+  if (mode === 'ai') {
+    b.className = 'key-badge ai';
+    b.textContent = 'AI mode — Claude Haiku enabled';
+  } else {
+    b.className = 'key-badge free';
+    b.textContent = 'Free mode — works without key';
+  }
+}
+
+function switchTab(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function qs(q) {
+  document.getElementById('searchQ').value = q;
+  switchTab('search', document.querySelectorAll('.tab')[1]);
+  doSearch();
+}
+
+// ── Summarize ────────────────────────────────────────────────────────────────
+async function summarize() {
+  const url = document.getElementById('paperUrl').value.trim();
+  if (!url) return;
+  const out = document.getElementById('sumOut');
+  const btn = document.getElementById('sumBtn');
+  btn.disabled = true;
+  out.innerHTML = `<div class="loading"><div class="spin"></div>Fetching paper from arXiv…</div>`;
+
+  try {
+    // Step 1: Fetch arXiv metadata
+    const r = await fetch(`/api/arxiv?url=${encodeURIComponent(url)}`);
+    const paper = await r.json();
+
+    if (paper.error) {
+      out.innerHTML = `<div class="error"><strong>Could not fetch paper</strong>${paper.error}<br><br>Make sure you're using an arXiv abstract URL like:<br><code>https://arxiv.org/abs/2408.11001</code></div>`;
+      return;
+    }
+
+    if (apiKey) {
+      // Step 2a: AI mode — send to Claude Haiku via proxy
+      out.innerHTML = `<div class="loading"><div class="spin"></div>Analyzing with Claude Haiku…</div>`;
+      const ar = await fetch('/api/summarize-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey, paperData: paper })
+      });
+      const ai = await ar.json();
+      if (ai.error) {
+        out.innerHTML = `<div class="error"><strong>AI Error:</strong> ${ai.error}<br>Falling back to free mode…</div>`;
+        setTimeout(() => renderFree(paper, out), 1200);
+      } else {
+        renderAI(paper, ai, out);
+      }
+    } else {
+      // Step 2b: Free mode — structured extraction from abstract
+      renderFree(paper, out);
+    }
+  } catch (e) {
+    out.innerHTML = `<div class="error"><strong>Error:</strong> ${e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderFree(p, out) {
+  const authors = fmtAuthors(p.authors);
+  const tags = (p.categories || []).slice(0, 4).map(c =>
+    `<span class="tag t-purple">${c}</span>`
+  ).join('');
+  const fieldTags = (p.fieldsOfStudy || []).slice(0, 2).map(f =>
+    `<span class="tag t-blue">${f}</span>`
+  ).join('');
+  const citeStr = p.citationCount != null
+    ? `<span class="cite-pill">${p.citationCount.toLocaleString()} citations</span>` : '';
+
+  // Smart abstract extraction
+  const abs = p.abstract || '';
+  const tldr = p.s2tldr || extractTldr(abs);
+
+  out.innerHTML = `
+  <div class="scard">
+    <div class="scard-head">
+      <div class="scard-title">${p.title}</div>
+      <div class="scard-meta">
+        <span>${authors}</span>
+        <span>· ${p.year}</span>
+        <span>· ${p.venue}</span>
+        ${citeStr}
+      </div>
+      <div class="tag-row">${fieldTags}${tags}</div>
+    </div>
+
+    <div class="mode-strip free-mode">
+      <div class="mode-dot"></div>
+      Free mode — metadata from arXiv + Semantic Scholar · Add API key above for deeper AI analysis
+    </div>
+
+    <div class="abstract-sec">
+      <div class="sec-lbl">Abstract</div>
+      <div class="abstract-txt" id="absText">${abs}</div>
+      <span class="read-more" onclick="toggleAbs()">Read more ↓</span>
+    </div>
+
+    <div class="tldr">
+      <span class="tldr-lbl">TL;DR</span>
+      <span class="tldr-txt">${tldr}</span>
+    </div>
+
+    <div class="verdict">
+      <span class="verdict-lbl">
+        <a href="${p.absUrl}" target="_blank" style="color:var(--accent)">Open on arXiv ↗</a>
+        &nbsp;·&nbsp;
+        <a href="${p.pdfUrl}" target="_blank" style="color:var(--text2)">PDF ↗</a>
+      </span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:12px;color:var(--text3)">Useful?</span>
+        <div class="vbtns">
+          <button class="vbtn" id="v-yes" onclick="verd('yes')">Yes</button>
+          <button class="vbtn" id="v-no" onclick="verd('no')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderAI(p, ai, out) {
+  const authors = fmtAuthors(p.authors);
+  const tags = (ai.tags || []).map(t => `<span class="tag t-purple">${t}</span>`).join('');
+  const citeStr = p.citationCount != null
+    ? `<span class="cite-pill">${p.citationCount.toLocaleString()} citations</span>` : '';
+  const bullets = arr => (arr || []).map(i => `<li>${i}</li>`).join('');
+
+  out.innerHTML = `
+  <div class="scard">
+    <div class="scard-head">
+      <div class="scard-title">${p.title}</div>
+      <div class="scard-meta">
+        <span>${authors}</span>
+        <span>· ${p.year}</span>
+        <span>· ${p.venue}</span>
+        ${citeStr}
+      </div>
+      <div class="tag-row">
+        <span class="tag t-blue">${ai.relevantFor ? 'AI analyzed' : 'AI summary'}</span>
+        ${tags}
+      </div>
+    </div>
+
+    <div class="mode-strip ai-mode">
+      <div class="mode-dot"></div>
+      AI mode — analyzed by Claude Haiku · Deep extraction from abstract
+    </div>
+
+    <div class="sgrid">
+      <div class="sec">
+        <div class="sec-lbl">Problem solved</div>
+        <div class="sec-txt">${ai.problem}</div>
+      </div>
+      <div class="sec">
+        <div class="sec-lbl">Methodology</div>
+        <ul class="blist">${bullets(ai.methodology)}</ul>
+      </div>
+      <div class="sec">
+        <div class="sec-lbl">Key findings</div>
+        <ul class="blist">${bullets(ai.keyFindings)}</ul>
+      </div>
+      <div class="sec">
+        <div class="sec-lbl">Contributions</div>
+        <ul class="blist">${bullets(ai.contributions)}</ul>
+        <div style="margin-top:12px">
+          <div class="sec-lbl">Limitations</div>
+          <div class="sec-txt" style="margin-top:4px">${ai.limitations}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tldr">
+      <span class="tldr-lbl">TL;DR</span>
+      <span class="tldr-txt">${ai.tldr}</span>
+    </div>
+
+    <div class="verdict">
+      <span class="verdict-lbl">
+        Best for: ${ai.relevantFor} &nbsp;·&nbsp;
+        <a href="${p.absUrl}" target="_blank" style="color:var(--accent)">arXiv ↗</a>
+      </span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:12px;color:var(--text3)">Useful?</span>
+        <div class="vbtns">
+          <button class="vbtn" id="v-yes" onclick="verd('yes')">Yes</button>
+          <button class="vbtn" id="v-no" onclick="verd('no')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function extractTldr(abstract) {
+  if (!abstract) return 'No abstract available.';
+  const sentences = abstract.match(/[^.!?]+[.!?]+/g) || [];
+  if (sentences.length <= 2) return abstract;
+  return (sentences[0] + ' ' + sentences[sentences.length - 1]).trim();
+}
+
+function fmtAuthors(arr) {
+  if (!arr || !arr.length) return 'Unknown authors';
+  const shown = arr.slice(0, 3).join(', ');
+  return arr.length > 3 ? shown + ' et al.' : shown;
+}
+
+function toggleAbs() {
+  const el = document.getElementById('absText');
+  const expanded = el.classList.toggle('expanded');
+  el.nextElementSibling.textContent = expanded ? 'Show less ↑' : 'Read more ↓';
+}
+
+function verd(v) {
+  document.getElementById('v-yes').className = 'vbtn' + (v === 'yes' ? ' yes' : '');
+  document.getElementById('v-no').className = 'vbtn' + (v === 'no' ? ' no' : '');
+}
+
+// ── Search ───────────────────────────────────────────────────────────────────
+async function doSearch() {
+  const q = document.getElementById('searchQ').value.trim();
+  if (!q) return;
+  const out = document.getElementById('searchOut');
+  out.innerHTML = `<div class="loading"><div class="spin"></div>Searching Semantic Scholar…</div>`;
+
+  try {
+    const r = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=10`);
+    if (!r.ok) throw new Error(`Server error ${r.status}`);
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    const papers = data.data || [];
+
+    if (!papers.length) {
+      out.innerHTML = `<div class="no-res">No results for "${q}". Try different keywords.</div>`;
+      return;
+    }
+
+    out.innerHTML = `
+      <div class="rcount">${papers.length} results for "${q}"</div>
+      <div class="results">${papers.map(paperCard).join('')}</div>`;
+  } catch (e) {
+    out.innerHTML = `<div class="error"><strong>Search failed:</strong> ${e.message}</div>`;
+  }
+}
+
+function paperCard(p) {
+  const authors = (p.authors || []).slice(0, 2).map(a => a.name).join(', ')
+    + ((p.authors || []).length > 2 ? ' et al.' : '');
+  const arxivId = p.externalIds?.ArXiv;
+  const pdfUrl = p.openAccessPdf?.url || '';
+  const arxivUrl = arxivId ? `https://arxiv.org/abs/${arxivId}` : '';
+  const doiUrl = p.externalIds?.DOI ? `https://doi.org/${p.externalIds.DOI}` : '';
+  const openUrl = arxivUrl || pdfUrl || doiUrl;
+  const sumUrl = arxivUrl;
+
+  const openBtn = openUrl ? `<a class="pa" href="${openUrl}" target="_blank" rel="noopener">Open ↗</a>` : '';
+  const sumBtn = sumUrl ? `<button class="pa pri" onclick="loadSum('${sumUrl}')">Summarize →</button>` : '';
+
+  return `<div class="pcard">
+    <div class="pcard-title">${p.title}</div>
+    <div class="pcard-meta">
+      <span>${authors || 'Unknown'}</span>
+      ${p.year ? `<span>· ${p.year}</span>` : ''}
+      ${p.venue ? `<span>· ${p.venue}</span>` : ''}
+      ${p.citationCount != null ? `<span>· ${p.citationCount.toLocaleString()} citations</span>` : ''}
+    </div>
+    ${p.abstract ? `<div class="pcard-abs">${p.abstract}</div>` : ''}
+    <div class="pcard-acts">${openBtn}${sumBtn}</div>
+  </div>`;
+}
+
+function loadSum(url) {
+  document.getElementById('paperUrl').value = url;
+  switchTab('summarize', document.querySelectorAll('.tab')[0]);
+  summarize();
+}
+</script>
+</body>
+</html>
