@@ -1,4 +1,4 @@
-# ResearchLens v2 — AI Paper Summarizer
+# ResearchLens — AI Paper Summarizer
 
 A genuine AI/ML tool that summarizes research papers using two real NLP techniques running locally — no API key, no cloud, no cost.
 
